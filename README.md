@@ -29,6 +29,21 @@ API está en contrucción
 
 _En Proceso de construcción_
 
+##### Docker:
+
+- Correr el servicio de docker en el PC (Docker Desktop)
+- Ejecutar comando para levantar la imagen de la base de datos
+  > docker compose up -d
+- Conectar al IDE de Base de datos
+
+  - Host: localhost
+  - Port: 5436
+  - Database: zaiko_db
+  - User\*: postgres
+  - Pass\*: postgres
+
+  _(\*) Estos datos pueden cambiarse en el docker-compose.yml_
+
 ## Licencia
 
 MIT
