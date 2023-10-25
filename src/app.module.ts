@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksModule } from './demo/tasks/tasks.module';
 import { StateTasksModule } from './demo/state-tasks/state-tasks.module';
 import { UsersModule } from './users/users.module';
+import { UserStatesModule } from './user-states/user-states.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UsersModule } from './users/users.module';
     TasksModule,
     StateTasksModule,
     UsersModule,
+    UserStatesModule,
   ],
   controllers: [],
   providers: [],
