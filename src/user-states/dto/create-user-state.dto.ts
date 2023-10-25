@@ -2,17 +2,17 @@ import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserStateDto {
   @IsString()
-  'name': string;
+  name: string;
 
   @IsBoolean()
   @IsOptional()
-  'enable': boolean;
+  enable: boolean;
 
   @IsString()
   @IsOptional()
-  'userCreatedAt': string;
+  userCreatedAt: string;
 
   @IsString()
   @IsOptional()
-  'userUpdateAt': string;
+  userUpdateAt: string;
 }

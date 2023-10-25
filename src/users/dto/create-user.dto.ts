@@ -8,32 +8,34 @@ import {
 
 export class CreateUserDto {
   @IsString()
-  'username': string;
+  username: string;
 
   @IsString()
-  'password': string;
+  password: string;
 
   @IsInt()
   @IsPositive()
-  'state': number;
+  @IsOptional()
+  state?: number;
 
   @IsInt()
   @IsPositive()
-  'role': number;
+  @IsOptional()
+  role?: number;
 
   @IsBoolean()
   @IsOptional()
-  'changePassword': boolean;
+  changePassword?: boolean;
 
   @IsBoolean()
   @IsOptional()
-  'enable': boolean;
+  enable?: boolean;
 
   @IsString()
   @IsOptional()
-  'userCreatedAt': string;
+  userCreatedAt?: string;
 
   @IsString()
   @IsOptional()
-  'userUpdateAt': string;
+  userUpdateAt?: string;
 }
