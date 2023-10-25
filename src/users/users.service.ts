@@ -4,12 +4,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { UserState } from 'src/user-states/entities/user-state.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(UserState)
+    private readonly userStateRepository: Repository<UserState>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -23,8 +26,11 @@ export class UsersService {
       throw new NotFoundException('El usuario ya existe');
     }
 
+    const userStateFound = await this.validateUseState(createUserDto.state);
+
     const user = this.userRepository.create({
       ...createUserDto,
+      state: userStateFound,
     });
     return await this.userRepository.save(user);
   }
@@ -49,16 +55,21 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const userFound = await this.userRepository.findOneBy({ id });
+    await this.findOne(id);
 
-    if (!userFound) {
-      throw new NotFoundException('El usuario no existe');
-    }
-
-    return await this.userRepository.update({ id }, { ...updateUserDto });
+    return await this.userRepository.update(
+      { id },
+      {
+        ...updateUserDto,
+        state: updateUserDto.state
+          ? await this.validateUseState(updateUserDto.state)
+          : undefined,
+        updateAt: new Date(),
+      },
+    );
   }
 
-  async remove(id: number) {
+  async remove(id: number, updateUserDto: UpdateUserDto) {
     const userFound = await this.userRepository.findOneBy({ id });
 
     if (!userFound) {
@@ -69,9 +80,20 @@ export class UsersService {
       { id },
       {
         enable: false,
-        userUpdateAt: userFound.username,
+        userUpdateAt: updateUserDto.userUpdateAt,
         updateAt: new Date(),
       },
     );
+  }
+
+  private async validateUseState(state: number) {
+    const userStateEntity = await this.userStateRepository.findOneBy({
+      id: state,
+    });
+
+    if (!userStateEntity) {
+      throw new NotFoundException('El estado del usuario no existe');
+    }
+    return userStateEntity;
   }
 }

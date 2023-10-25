@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
+import { UserState } from 'src/user-states/entities/user-state.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('Users')
 export class User {
@@ -11,8 +18,10 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
-  state: number;
+  @ManyToOne(() => UserState, (userState) => userState.id, {
+    eager: true,
+  })
+  state: UserState;
 
   @Column()
   role: number;
